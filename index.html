@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Life Tips from Nic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        background-color: blue;
+        font-family: monospace;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        color: white;
+        text-align: center;
+        text-shadow: 2px 2px black;
+        font-weight: bold;
+        font-size: 36px;
+        margin-top: 20px;
+      }
+      button {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        font-size: 24px;
+        background-color: white;
+        border-radius: 8px;
+        border: 2px solid black;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      button:hover {
+        background-color: black;
+        color: white;
+        transform: scale(1.1);
+      }
+      p {
+        color: white;
+        text-align: center;
+        font-size: 24px;
+        margin-top: 20px;
+      }
+      #share {
+        display: none;
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        margin-top: 20px;
+      }
+      /* Mobile styles */
+      @media only screen and (max-width: 600px) {
+        h1 {
+          font-size: 28px;
+        }
+        button {
+          font-size: 18px;
+          padding: 8px 16px;
+        }
+        p {
+          font-size: 18px;
+        }
+        #share {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="welcome">
+      <h1>Welcome to Life Tips from Nic</h1>
+      <p>Life Tips from Nic is the best website to improve the quality of your life. Each day log on to receive your personal tip.</p>
+      <button onclick="showTip()">Get a Tip</button>
+    </div>
+    <div id="tip-page" style="display: none;">
+      <h1>Life Tips from Nic</h1>
+      <button onclick="showTip()">Get Another Tip</button>
+      <p id="tip"></p>
+      <div id="share">Enjoy the tip? Take a screenshot and share it on social media with the hashtag #LifeTipsFromNic!</div>
+    </div>
+    <script>
+function showTip() {
+  const tips = [
+    "Drink more water to improve your health.",
+    "Try to get at least 7-8 hours of sleep every night.",
+    "Take breaks and stretch throughout the day to prevent muscle strain.",
+    "Set small goals to achieve a larger goal.",
+    "Read a book for at least 30 minutes every day to exercise your mind.",
+    "Spend time in nature to improve your mental health.",
+    "Practice mindfulness or meditation to reduce stress and anxiety.",
+    "Take care of your physical health to maintain your mental well-being.",
+    "Find a hobby or activity that you enjoy to relieve stress and boost your mood."
+  ];
+
+  const lastTipDate = localStorage.getItem("lastTipDate");
+  const currentDate = new Date().toDateString();
+
+  if (lastTipDate !== null && lastTipDate === currentDate) {
+    // User has already received a tip today
+    const lastTipIndex = localStorage.getItem("lastTipIndex");
+    if (lastTipIndex === null) {
+      alert("You have already received a tip today, but there was an error retrieving it. Please try again tomorrow.");
+    } else {
+      const lastTip = tips[lastTipIndex];
+      alert(`You have already received a tip today:\n\n${lastTip}`);
+    }
+    return;
+  }
+
+  const lastTipIndex = localStorage.getItem("lastTipIndex");
+  let randomTipIndex = Math.floor(Math.random() * tips.length);
+
+  while (randomTipIndex == lastTipIndex) {
+    randomTipIndex = Math.floor(Math.random() * tips.length);
+  }
+
+  const randomTip = tips[randomTipIndex];
+  localStorage.setItem("lastTipIndex", randomTipIndex);
+  localStorage.setItem("lastTipDate", currentDate);
+
+  document.getElementById("tip").innerHTML = randomTip;
+  document.getElementById("welcome").style.display = "none";
+  document.getElementById("tip-page").style.display = "block";
+  document.getElementById("share").style.display = "none";
+  
+  // show share message for 10 seconds
+  document.getElementById("share").style.display = "block";
+  setTimeout(function() {
+    document.getElementById("share").style.display = "none";
+  }, 10000);
+}
+</script>
+</body>
+</html>
